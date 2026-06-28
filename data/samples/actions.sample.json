@@ -1,0 +1,11 @@
+{
+  "song": "daoxiang",
+  "_note": "样例动作时间轴。真实数据按歌词段落粗排(见 docs/03 §4 / docs/07 §7)。name 必须在 docs/05 §4 动作词表内。",
+  "timeline": [
+    { "t": 0.0,  "action": "idle",         "loop": true },
+    { "t": 1.8,  "action": "singing_high", "loop": true },
+    { "t": 25.0, "action": "sway",         "loop": true },
+    { "t": 44.0, "action": "wave",         "loop": false, "blend": 0.4, "dur": 3.0, "then": "singing_high" },
+    { "t": 88.0, "action": "bow",          "loop": false, "blend": 0.4, "dur": 4.0, "then": "idle" }
+  ]
+}
