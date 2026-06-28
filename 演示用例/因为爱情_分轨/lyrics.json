@@ -1,0 +1,203 @@
+{
+  "scene": "yinwei-aiqing",
+  "fps": 30,
+  "lines": [
+    {
+      "t": 11.74,
+      "d": 2.78,
+      "part": "digital",
+      "performer": "Neo",
+      "text": "给你一张过去的CD"
+    },
+    {
+      "t": 16.3,
+      "d": 2.78,
+      "part": "teammateC",
+      "performer": "Neo",
+      "text": "听听那时我们的爱情"
+    },
+    {
+      "t": 21.34,
+      "d": 3.66,
+      "part": "duet",
+      "performer": "Neo",
+      "text": "有时会突然忘了我还在爱着你"
+    },
+    {
+      "t": 33.39,
+      "d": 2.78,
+      "part": "teammateC",
+      "performer": "队友C",
+      "text": "再唱不出那样的歌曲"
+    },
+    {
+      "t": 37.69,
+      "d": 2.78,
+      "part": "teammateC",
+      "performer": "队友C",
+      "text": "听到都会红着脸躲避"
+    },
+    {
+      "t": 43.14,
+      "d": 3.66,
+      "part": "duet",
+      "performer": "队友C",
+      "text": "虽然会经常忘了我依然爱着你"
+    },
+    {
+      "t": 53.79,
+      "d": 3.22,
+      "part": "duet",
+      "performer": "队友C",
+      "text": "因为爱情 不会轻易悲伤"
+    },
+    {
+      "t": 59.54,
+      "d": 3.22,
+      "part": "duet",
+      "performer": "Neo",
+      "text": "所以一切都是幸福的模样"
+    },
+    {
+      "t": 65.13,
+      "d": 3.0,
+      "part": "duet",
+      "performer": "队友C",
+      "text": "因为爱情 简单的生长"
+    },
+    {
+      "t": 70.73,
+      "d": 3.0,
+      "part": "duet",
+      "performer": "Neo",
+      "text": "依然随时可以为你疯狂"
+    },
+    {
+      "t": 76.0,
+      "d": 3.22,
+      "part": "duet",
+      "performer": "队友C",
+      "text": "因为爱情 怎么会有沧桑"
+    },
+    {
+      "t": 81.35,
+      "d": 3.22,
+      "part": "duet",
+      "performer": "Neo",
+      "text": "所以我们还是年轻的模样"
+    },
+    {
+      "t": 86.89,
+      "d": 3.0,
+      "part": "duet",
+      "performer": "队友C",
+      "text": "因为爱情 在那个地方"
+    },
+    {
+      "t": 92.53,
+      "d": 3.88,
+      "part": "duet",
+      "performer": "Neo+队友C",
+      "text": "（Neo）依然还有人在那里游荡 （合唱）人来人往"
+    },
+    {
+      "t": 120.73,
+      "d": 2.78,
+      "part": "digital",
+      "performer": "队友C",
+      "text": "再唱不出那样的歌曲"
+    },
+    {
+      "t": 125.3,
+      "d": 2.78,
+      "part": "teammateC",
+      "performer": "队友C",
+      "text": "听到都会红着脸躲避"
+    },
+    {
+      "t": 130.51,
+      "d": 3.66,
+      "part": "duet",
+      "performer": "Neo+队友C",
+      "text": "（You）虽然会经常忘了  (Neo) 我依然爱着你"
+    },
+    {
+      "t": 140.78,
+      "d": 3.22,
+      "part": "duet",
+      "performer": "队友C",
+      "text": "因为爱情 不会轻易悲伤"
+    },
+    {
+      "t": 146.82,
+      "d": 3.22,
+      "part": "duet",
+      "performer": "Neo",
+      "text": "所以一切都是幸福的模样"
+    },
+    {
+      "t": 152.4,
+      "d": 3.0,
+      "part": "duet",
+      "performer": "队友C",
+      "text": "因为爱情 简单的生长"
+    },
+    {
+      "t": 158.1,
+      "d": 3.0,
+      "part": "duet",
+      "performer": "Neo",
+      "text": "依然随时可以为你疯狂"
+    },
+    {
+      "t": 162.59,
+      "d": 3.22,
+      "part": "duet",
+      "performer": "队友C",
+      "text": "因为爱情 怎么会有沧桑"
+    },
+    {
+      "t": 168.5,
+      "d": 3.22,
+      "part": "duet",
+      "performer": "Neo",
+      "text": "所以我们还是年轻的模样"
+    },
+    {
+      "t": 174.7,
+      "d": 3.0,
+      "part": "duet",
+      "performer": "队友C",
+      "text": "因为爱情 在那个地方"
+    },
+    {
+      "t": 179.91,
+      "d": 3.88,
+      "part": "duet",
+      "performer": "Neo+队友C",
+      "text": "(Neo) 依然还有人在那里游荡 （合唱）人来人往"
+    },
+    {
+      "t": 191.63,
+      "d": 2.78,
+      "part": "digital",
+      "performer": "Neo",
+      "text": "给你一张过去的CD"
+    },
+    {
+      "t": 196.28,
+      "d": 2.78,
+      "part": "teammateC",
+      "performer": "Neo",
+      "text": "听听那时我们的爱情"
+    },
+    {
+      "t": 201.64,
+      "d": 3.66,
+      "part": "duet",
+      "performer": "Neo+队友C",
+      "text": "(You) 有时会突然忘了 （合唱）我还在爱着你"
+    }
+  ],
+  "_part_needs_review": true
+}

@@ -1,0 +1,9 @@
+{
+  "scene": "yinwei-aiqing",
+  "id": "ywa_intro_gap",
+  "voice": "neo",
+  "text": "唱得很好，下一句我来接。",
+  "tts_wav": "演示用例\\因为爱情_分轨\\encouragements\\ywa_intro_gap_neo_tts.wav",
+  "prebaked": "演示用例\\因为爱情_分轨\\encouragements\\ywa_intro_gap_neo_rvc.wav",
+  "rvc_applied": false
+}

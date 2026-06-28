@@ -34,7 +34,8 @@ SCENES = {
         "id": "chuanqi", "title": "传奇", "character": "angela", "relation": "unison",
         "duration": 90.0,
         "character_model": "models/angela/angela.model3.json",
-        "backing": "/assets/演示用例/传奇_分轨/传奇_backing.wav",
+        "backing": "/演示用例/传奇_分轨/传奇_backing.wav",
+        "mv": "/演示用例/传奇 MV 2.mp4",
         "dialogue": {
             "intro": ["这首《传奇》，我们一起唱吧。"],
             "outro": ["唱得真好，下一首换个人选？"],
@@ -45,7 +46,8 @@ SCENES = {
         "id": "yinwei-aiqing", "title": "因为爱情", "character": "neo", "relation": "duet",
         "duration": 90.0,
         "character_model": "models/neo/neo.model3.json",
-        "backing": "/assets/演示用例/因为爱情_分轨/因为爱情_backing.wav",
+        "backing": "/演示用例/因为爱情_分轨/因为爱情_backing.wav",
+        "mv": "/演示用例/因为爱情 MV.mp4",
         "dialogue": {
             "intro": ["因为爱情，不会轻易悲伤。我们一起，好吗？"],
             "outro": ["唱得真好，这就是爱情的样子吧。"],
@@ -54,21 +56,31 @@ SCENES = {
     },
 }
 
-# 内联轨道（自包含；真实数据见 data/samples 与 演示用例/*_分轨/）
+# 内联轨道（自包含）；优先读 演示用例/<曲>_分轨/lyrics.json（你的更正），没有再内联兜底
+# 字段约定：以 performer + text 为准（part 仅兜底）；支持单句复合（见 docs/03 §2）
+from pathlib import Path as _Path
+ROOT = _Path(__file__).resolve().parents[3]   # 仓库根：mock→backend→packages→Angela
+SCENE_DIR = {"chuanqi": "传奇", "yinwei-aiqing": "因为爱情"}
+
+
 def _lyrics(scene_id):
-    if scene_id == "chuanqi":  # 齐唱：duet 两栏同显
+    _p = ROOT / "演示用例" / f"{SCENE_DIR.get(scene_id, scene_id)}_分轨" / "lyrics.json"
+    if _p.exists():
+        return json.loads(_p.read_text(encoding="utf-8"))
+    if scene_id == "chuanqi":  # 齐唱：Angela+队友C 同旋律，两栏同显
         return {"scene": "chuanqi", "fps": 30, "lines": [
-            {"t": 2.0, "d": 4.2, "part": "duet", "performer": "Angela+队友C", "text": "只是因为在人群中多看了你一眼"},
-            {"t": 6.4, "d": 4.0, "part": "duet", "performer": "Angela+队友C", "text": "再也没能忘掉你容颜"},
-            {"t": 10.6,"d": 4.2, "part": "duet", "performer": "Angela+队友C", "text": "梦想着偶然能有一天再相见"},
+            {"t": 2.0, "d": 4.2, "performer": "Angela+队友C", "text": "只是因为在人群中多看了你一眼"},
+            {"t": 6.4, "d": 4.0, "performer": "Angela+队友C", "text": "再也没能忘掉你容颜"},
+            {"t": 10.6,"d": 4.2, "performer": "Angela+队友C", "text": "梦想着偶然能有一天再相见"},
         ]}
-    # 因为爱情：男女对唱
+    # 因为爱情：男女对唱（performer 权威）+ 单句复合（text 内标谁唱哪段）
     return {"scene": "yinwei-aiqing", "fps": 30, "lines": [
-        {"t": 2.0, "d": 4.0, "part": "digital",   "performer": "Neo",       "text": "给你一张过去的CD"},
-        {"t": 6.2, "d": 4.0, "part": "teammateC", "performer": "队友C",     "text": "听听那时我们的爱情"},
-        {"t": 10.4,"d": 3.8, "part": "digital",   "performer": "Neo",       "text": "有时会突然忘了"},
-        {"t": 14.4,"d": 4.2, "part": "teammateC", "performer": "队友C",     "text": "我还在爱着你"},
-        {"t": 20.0,"d": 4.6, "part": "duet",      "performer": "Neo+队友C", "text": "因为爱情 不会轻易悲伤"},
+        {"t": 2.0, "d": 4.0, "performer": "Neo",       "text": "给你一张过去的CD"},
+        {"t": 6.2, "d": 4.0, "performer": "队友C",     "text": "听听那时我们的爱情"},
+        {"t": 10.4,"d": 4.2, "performer": "Neo+队友C", "text": "（Neo）有时会突然忘了 （合唱）我还在爱着你"},
+        {"t": 14.4,"d": 4.0, "performer": "Neo",       "text": "再唱不出那样的歌曲"},
+        {"t": 18.4,"d": 4.0, "performer": "队友C",     "text": "听到都会红着脸躲避"},
+        {"t": 24.0,"d": 4.6, "performer": "Neo+队友C", "text": "因为爱情 不会轻易悲伤"},
     ]}
 
 VISEMES = {  # 循环幅度，模拟唱歌张嘴；前端按 t 插值
@@ -140,10 +152,23 @@ async def run_scene(bus: Bus, sid: str, stop_evt: asyncio.Event):
     await bus.send("action.set", {"name": s["sing_action"], "loop": True})
     await bus.send("scene.start", {"id": sid, "backingUrl": s["backing"], "t0": 0})
     asyncio.create_task(tick_loop(bus, s["duration"], stop_evt))
-    await asyncio.sleep(s["duration"])
+    try:
+        await asyncio.wait_for(stop_evt.wait(), timeout=s["duration"])  # 到时或被 jump_outro 提前结束
+    except asyncio.TimeoutError:
+        pass
     stop_evt.set()
     await bus.send("scene.end", {"id": sid})
     await fake_tts(bus, s["dialogue"]["outro"], voice)          # outro 对白
+
+
+async def _safe_scene(bus, sid, stop_evt):
+    """run_scene 的异常兜底（作为后台 task 运行，不阻塞读循环）。"""
+    try:
+        await run_scene(bus, sid, stop_evt)
+    except asyncio.CancelledError:
+        raise
+    except Exception as e:
+        print(f"[run_scene error] {e}")
 
 
 # ---------- 主连接处理 ----------
@@ -151,6 +176,15 @@ async def handler(ws):
     peer = ws.remote_address
     bus = Bus(ws)
     stop_evt = asyncio.Event()
+    state = {"task": None}
+
+    async def start_scene(sid):
+        # 取消上一场（若有），起新场为后台 task —— 不阻塞读循环，jump_outro/stop 才能及时响应
+        if state["task"] and not state["task"].done():
+            state["task"].cancel()
+        stop_evt.clear()
+        state["task"] = asyncio.create_task(_safe_scene(bus, sid, stop_evt))
+
     print(f"[connect] {peer}")
     try:
         async for raw in ws:
@@ -174,16 +208,23 @@ async def handler(ws):
                 if sid not in SCENES:
                     await bus.send("error", {"code": "SCENE_NOT_FOUND", "message": sid})
                     continue
-                await run_scene(bus, sid, stop_evt)
+                await start_scene(sid)
 
             elif mtype == "next.scene":
                 # 简单串行：传奇 → 因为爱情
                 nxt = "yinwei-aiqing" if data.get("id", "chuanqi") == "chuanqi" else "chuanqi"
-                await run_scene(bus, nxt, stop_evt)
+                await start_scene(nxt)
 
             elif mtype == "scene.stop":
                 stop_evt.set()
+                if state["task"] and not state["task"].done():
+                    state["task"].cancel()
                 await bus.send("scene.end", {"id": data.get("id", "")})
+
+            elif mtype == "scene.jump_outro":
+                # 跳到收尾：触发 run_scene 的 wait_for 提前返回 → scene.end + outro（不重复 outro）
+                await bus.send("phase.change", {"phase": "outro"})
+                stop_evt.set()
 
             elif mtype == "outro.start":
                 s = SCENES.get(data.get("id", "chuanqi"))
@@ -199,6 +240,8 @@ async def handler(ws):
         pass
     finally:
         stop_evt.set()
+        if state["task"] and not state["task"].done():
+            state["task"].cancel()
         print(f"[disconnect] {peer}")
 
 

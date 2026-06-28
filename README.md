@@ -20,7 +20,7 @@
 | 层 | 选型 | 说明 |
 |----|------|------|
 | 舞台/前端 | **Web（HTML/CSS/JS）** | `video` 播 MV + overlay 歌词 + canvas 接数字人 |
-| 数字人 | **Live2D Cubism（pixi-live2d-display）** | 两个模型：Angela(女)、Neo(男)，按场切换 |
+| 数字人 | **Live2D Cubism（pixi.js@7 + pixi-live2d-display@0.5.0-beta）** | 两个模型：Angela(女)、Neo(男)，按场切换 |
 | 通信 | **WebSocket** | 控制信令 + TTS/口型帧；合唱期前端以音频时钟为渲染权威 |
 | 后端 | **Python（FastAPI + websockets）** | 烘焙伴奏带、WS 推流、TTS |
 | **声音烤制** | **RVC（Applio）离线推理** | 用社区现成高质量角色模型；**不自训** |
@@ -93,7 +93,9 @@ cd packages/voice
 cd packages/stage
 python -m http.server 5173        # 浏览器开 http://localhost:5173
 
-# 数字人（队友 A）：两个模型放 packages/character/models/{angela,neo}/
+# 数字人（队友 A）：在【仓库根】起服务（demo 需跨目录读 data/samples/）
+python -m http.server 5173        # 浏览器开 http://localhost:5173/packages/character/demo.html
+# 依赖 pixi.js@7 + pixi-live2d-display@0.5.0-beta；两个模型放 packages/character/models/{angela,neo}/
 ```
 
 ## 6. 状态

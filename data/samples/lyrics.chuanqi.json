@@ -1,0 +1,49 @@
+{
+  "fps": 30,
+  "_note": "演示占位歌词时间轴，用于先调通场1流程；正式路演前应按 backing.wav 重新打点。",
+  "lines": [
+    {
+      "t": 12.0,
+      "d": 5.0,
+      "part": "duet",
+      "text": "只是因为在人群中多看了你一眼",
+      "performer": "Angela+Teammate C"
+    },
+    {
+      "t": 22.0,
+      "d": 5.0,
+      "part": "duet",
+      "text": "再也没能忘掉你容颜",
+      "performer": "Angela+Teammate C"
+    },
+    {
+      "t": 45.0,
+      "d": 5.0,
+      "part": "duet",
+      "text": "梦想着偶然能有一天再相见",
+      "performer": "Angela+Teammate C"
+    },
+    {
+      "t": 72.0,
+      "d": 6.0,
+      "part": "duet",
+      "text": "想你时你在天边",
+      "performer": "Angela+Teammate C"
+    },
+    {
+      "t": 92.0,
+      "d": 6.0,
+      "part": "duet",
+      "text": "想你时你在眼前",
+      "performer": "Angela+Teammate C"
+    },
+    {
+      "t": 136.0,
+      "d": 7.0,
+      "part": "duet",
+      "text": "宁愿相信我们前世有约",
+      "performer": "Angela+Teammate C"
+    }
+  ],
+  "scene": "chuanqi"
+}

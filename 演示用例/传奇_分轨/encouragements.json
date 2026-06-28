@@ -1,0 +1,23 @@
+{
+  "scene": "chuanqi",
+  "_note": "手动根据 演示用例/王菲 - 传奇.lrc 的前奏/间奏空档挑选。t 为歌曲时间轴秒。",
+  "cues": [
+    {
+      "id": "cq_prelude_start",
+      "phase": "prelude",
+      "t": 26.36,
+      "text": "前奏马上开始，放松呼吸，我们一起进。",
+      "speaker": "Angela",
+      "voice": "angela",
+      "prebaked": "演示用例/传奇_分轨/encouragements/cq_prelude_start_angela_rvc.wav"
+    },
+    {
+      "id": "cq_interlude_1",
+      "t": 130.0,
+      "text": "刚才唱得很好，间奏稳住气息，等一下我们一起进。",
+      "speaker": "Angela",
+      "voice": "angela",
+      "prebaked": "演示用例/传奇_分轨/encouragements/cq_interlude_1_angela_rvc.wav"
+    }
+  ]
+}

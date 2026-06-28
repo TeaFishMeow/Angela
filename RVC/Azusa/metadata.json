@@ -1,0 +1,150 @@
+{
+  "title": "Azusa/阿梓 (VirtuaReal)",
+  "author": {
+    "name": "Scxuy"
+  },
+  "md5": "d3e826942e7bcc3bb1ae3567a376f74e",
+  "uploadedAt": "2024-08-02T15:10:45.827Z",
+  "weightsLink": "https://www.weights.gg/models/clzcudmbo1mc0qc81ohy4l9ro",
+  "id": "clzcudmbo1mc0qc81ohy4l9ro",
+  "type": "v2",
+  "tags": [
+    "RVC v2"
+  ],
+  "description": "阿梓从小就很可爱",
+  "samples": [],
+  "files": [
+    {
+      "name": "model.index",
+      "size": 409556979,
+      "md5": "8bc9075dfd565c5158627c4391a47a32"
+    },
+    {
+      "name": "model.pth",
+      "size": 55193241,
+      "md5": "d3e826942e7bcc3bb1ae3567a376f74e"
+    }
+  ],
+  "torchMetadata": {
+    "config": {
+      "spec_channels": 1025,
+      "segment_size": 32,
+      "inter_channels": 192,
+      "hidden_channels": 192,
+      "filter_channels": 768,
+      "n_heads": 2,
+      "n_layers": 6,
+      "kernel_size": 3,
+      "p_dropout": 0,
+      "resblock": "1",
+      "resblock_kernel_sizes": [
+        3,
+        7,
+        11
+      ],
+      "resblock_dilation_sizes": [
+        [
+          1,
+          3,
+          5
+        ],
+        [
+          1,
+          3,
+          5
+        ],
+        [
+          1,
+          3,
+          5
+        ]
+      ],
+      "upsample_rates": [
+        10,
+        10,
+        2,
+        2
+      ],
+      "upsample_initial_channel": 512,
+      "upsample_kernel_sizes": [
+        16,
+        16,
+        4,
+        4
+      ],
+      "emb_channels": null,
+      "spk_embed_dim": 109,
+      "gin_channels": 256,
+      "sr": "40k"
+    },
+    "f0": 1,
+    "version": "v2",
+    "extra_info": {
+      "config": [
+        1025,
+        32,
+        192,
+        192,
+        768,
+        2,
+        6,
+        3,
+        0,
+        "1",
+        [
+          3,
+          7,
+          11
+        ],
+        [
+          [
+            1,
+            3,
+            5
+          ],
+          [
+            1,
+            3,
+            5
+          ],
+          [
+            1,
+            3,
+            5
+          ]
+        ],
+        [
+          10,
+          10,
+          2,
+          2
+        ],
+        512,
+        [
+          16,
+          16,
+          4,
+          4
+        ],
+        109,
+        256,
+        40000
+      ],
+      "info": "200epoch",
+      "sr": "40k",
+      "f0": 1,
+      "version": "v2"
+    },
+    "epochs": 0,
+    "step": 0,
+    "creation_date": null,
+    "model_hash": null
+  },
+  "url": "https://models.weights.gg/35201b18-2055-40fa-9ef6-ef28cb46ea2b.zip",
+  "urls": [],
+  "epochs": 0,
+  "originalFileList": [
+    "model.index",
+    "model.pth"
+  ]
+}

@@ -1,0 +1,68 @@
+:root{
+  --c-digital:#7fd1ff;
+  --c-teammate:#ffd47f;
+  --c-duet:#c9b6ff;
+}
+*{box-sizing:border-box;}
+html,body{margin:0;height:100%;background:#000;color:#eee;
+  font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-serif;overflow:hidden;}
+
+/* ===== 背景层 ===== */
+#mv{position:fixed;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;background:#000;}
+#mv-fallback{position:fixed;inset:0;z-index:0;display:flex;align-items:center;
+  justify-content:center;font-size:2rem;color:#444;
+  background:radial-gradient(circle at 50% 40%,#1b1f2a,#000);}
+.hidden{display:none !important;}
+
+/* ===== 顶部状态 ===== */
+#bar{position:fixed;top:0;left:0;right:0;z-index:5;display:flex;gap:1.2rem;
+  padding:.5rem 1rem;font-size:.85rem;background:linear-gradient(#000a,#0000);
+  pointer-events:none;}
+#bar #phase{color:var(--c-digital);}
+#bar #char-name{color:#fff;font-weight:600;}
+
+/* ===== 网易云式单列歌词 ===== */
+#lyrics{position:fixed;left:0;top:0;width:52vw;height:100%;z-index:3;overflow:hidden;
+  pointer-events:none;
+  -webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 24%,#000 76%,transparent 100%);
+  mask-image:linear-gradient(to bottom,transparent 0,#000 24%,#000 76%,transparent 100%);}
+#lyrics-scroll{position:absolute;left:0;right:0;top:0;will-change:transform;}
+#lyrics-center{position:absolute;left:0;right:0;top:50%;height:0;pointer-events:none;}
+.lyric-line{text-align:center;font-size:1.3rem;line-height:1.5;padding:.34rem 1.4rem;
+  white-space:pre-wrap;transform-origin:center;
+  transition:opacity .35s ease,transform .35s ease,filter .35s ease,color .35s ease;}
+/* 四态：正在唱 / 即将进入 / 已完成 / 未进入 */
+.lyric-line.singing{opacity:1;transform:scale(1.18);font-weight:700;color:#fff;
+  text-shadow:0 2px 16px rgba(0,0,0,.65);}
+.lyric-line.upcoming{opacity:.72;color:#dfe7f0;}
+.lyric-line.past{opacity:.4;filter:saturate(.5) brightness(.85);color:#8a93a0;}
+.lyric-line.future{opacity:.5;filter:saturate(.55);color:#9aa2ad;}
+/* performer 分段着色：仅在 正在唱/即将进入 行鲜明，其余被四态压成灰 */
+.lyric-line.singing .seg-neo,.lyric-line.upcoming .seg-neo{color:var(--c-digital);}
+.lyric-line.singing .seg-teammate,.lyric-line.upcoming .seg-teammate{color:var(--c-teammate);}
+.lyric-line.singing .seg-duet,.lyric-line.upcoming .seg-duet{color:var(--c-duet);}
+.singer-hint{display:inline-block;margin-right:.55rem;vertical-align:.08em;
+  font-size:.72em;font-weight:700;letter-spacing:0;border-radius:6px;
+  padding:.08rem .38rem;border:1px solid currentColor;background:#0007;}
+.singer-neo{color:var(--c-digital);}
+.singer-teammate{color:var(--c-teammate);}
+.singer-duet{color:var(--c-duet);}
+.lyric-line.past .singer-hint,.lyric-line.future .singer-hint{opacity:.72;}
+
+/* ===== 数字人 canvas（右侧） ===== */
+#cv{position:fixed;right:0;top:0;height:100%;width:min(44vw,620px);z-index:4;}
+
+/* ===== 字幕 ===== */
+#subtitle{position:fixed;left:50%;bottom:13vh;transform:translateX(-50%);
+  z-index:6;max-width:74vw;text-align:center;font-size:1.5rem;
+  text-shadow:0 2px 8px #000;padding:.6rem 1.2rem;border-radius:10px;background:#0009;}
+
+/* ===== 控制条 ===== */
+#controls{position:fixed;left:0;right:0;bottom:0;z-index:7;display:flex;
+  gap:.6rem;align-items:center;padding:.6rem 1rem;background:#000a;}
+#controls button{background:#222;color:#eee;border:1px solid #444;border-radius:8px;
+  padding:.45rem .9rem;cursor:pointer;font-size:.9rem;}
+#controls button:hover:not(:disabled){background:#333;}
+#controls button:disabled{opacity:.4;cursor:not-allowed;}
+#controls .hint{margin-left:auto;font-size:.75rem;opacity:.5;}
+#controls code{background:#222;padding:.05rem .3rem;border-radius:4px;}

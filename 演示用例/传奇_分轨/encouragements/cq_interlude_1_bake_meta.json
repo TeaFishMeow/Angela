@@ -1,0 +1,9 @@
+{
+  "scene": "chuanqi",
+  "id": "cq_interlude_1",
+  "voice": "angela",
+  "text": "刚才唱得很好，间奏稳住气息，等一下我们一起进。",
+  "tts_wav": "演示用例\\传奇_分轨\\encouragements\\cq_interlude_1_angela_tts.wav",
+  "prebaked": "演示用例\\传奇_分轨\\encouragements\\cq_interlude_1_angela_rvc.wav",
+  "rvc_applied": false
+}

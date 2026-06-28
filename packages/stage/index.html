@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- pixi@7 UMD 引用 process.env，必须先 polyfill，否则 ReferenceError: process is not defined -->
+  <script>window.process = window.process || { env: {} };</script>
+  <title>Angela · 合唱舞台（路演版）</title>
+  <link rel="icon" href="data:," />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <!-- 背景层 -->
+  <video id="mv" playsinline muted></video>
+  <div id="mv-fallback" class="hidden">MV 背景占位（assets 缺失时显示）</div>
+
+  <!-- 顶部状态条 -->
+  <header id="bar">
+    <span id="status">连接中…</span>
+    <span id="phase"></span>
+    <span id="clock-t"></span>
+    <span id="char-name"></span>
+  </header>
+
+  <!-- 网易云式单列滚动歌词 -->
+  <section id="lyrics">
+    <div id="lyrics-scroll"></div>
+    <div id="lyrics-center"></div>
+  </section>
+
+  <!-- 数字人槽位（右侧透明） -->
+  <canvas id="cv"></canvas>
+
+  <!-- 对白字幕 -->
+  <div id="subtitle" class="hidden"></div>
+
+  <!-- 控制条 -->
+  <footer id="controls">
+    <button id="btn-start">▶ 开始场1（传奇）</button>
+    <button id="btn-next" disabled>下一场</button>
+    <button id="btn-finale" disabled>⏭ 跳到收尾</button>
+    <button id="btn-stop">■ 停止</button>
+    <span class="hint">默认 mock（ws://localhost:8765）；真后端 <code>?ws=ws://localhost:8000/ws</code></span>
+  </footer>
+
+  <!-- 主音频（伴奏带 = 主时钟权威） -->
+  <audio id="audio" preload="auto"></audio>
+
+  <!-- Live2D 依赖（UMD 三件套，顺序固定：cubism core → pixi → cubism4）。character-client 动态 import character.js 需要 window.PIXI 就绪。路演前下到本地 lib/。 -->
+  <script src="https://cubism.live2d.com/sdk-web/cubismcore/live2dcubismcore.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/pixi.js@7.4.0/dist/pixi.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/pixi-live2d-display@0.5.0-beta/dist/cubism4.min.js"></script>
+
+  <script type="module" src="js/orchestrator.js"></script>
+</body>
+</html>

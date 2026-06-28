@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Angela · 数字人 Demo（队友 A）</title>
+  <link rel="icon" href="data:,">
+  <style>
+    html, body { margin: 0; height: 100%; background: #05070d; font-family: system-ui, sans-serif; color: #e8eaed; }
+    #stage {
+      position: relative; width: 100vw; height: 100vh; overflow: hidden;
+      /* 无视频时用渐变模拟 MV 背景，验证 canvas 透明、不挡画面 */
+      background: radial-gradient(120% 80% at 30% 20%, #1b2a4a 0%, #0a1020 55%, #05070d 100%);
+    }
+    #mv { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; }
+    #cv { position: absolute; inset: 0; z-index: 3; background: transparent; }
+    #ui {
+      position: absolute; z-index: 4; left: 14px; top: 14px;
+      background: rgba(8, 12, 20, .62); backdrop-filter: blur(6px);
+      padding: 12px 14px; border-radius: 10px; font-size: 13px; line-height: 1.9;
+      max-width: 360px; border: 1px solid rgba(255,255,255,.08);
+    }
+    #ui h1 { font-size: 14px; margin: 0 0 8px; }
+    #ui .row { margin: 6px 0; }
+    #ui .lbl { opacity: .65; display: inline-block; min-width: 7.5em; }
+    #ui button {
+      background: #1f6feb; color: #fff; border: 0; border-radius: 6px;
+      padding: 3px 9px; margin: 2px 3px 2px 0; cursor: pointer; font-size: 12px;
+    }
+    #ui button.dim { background: #2a3142; }
+    #ui button.act { background: #238636; }
+    #ui input[type=range] { vertical-align: middle; width: 180px; }
+    #status { font-size: 11px; opacity: .75; margin-top: 6px; min-height: 1em; }
+    #fps { position: absolute; z-index: 4; right: 14px; top: 12px; font-size: 12px;
+           background: rgba(0,0,0,.45); padding: 3px 8px; border-radius: 6px; }
+    .err { color: #ff7b72; }
+    .ok { color: #3fb950; }
+  </style>
+</head>
+<body>
+  <div id="stage">
+    <!-- 可选：叠真 MV 验证透明。取消注释并指向本地视频（如 ../../演示用例/因为爱情.mp4）。
+    <video id="mv" src="../../演示用例/因为爱情.mp4" muted loop autoplay playsinline></video> -->
+    <canvas id="cv"></canvas>
+
+    <div id="fps">fps: --</div>
+
+    <div id="ui">
+      <h1>Angela · 数字人 Demo</h1>
+      <div class="row">
+        <span class="lbl">模型：</span>
+        <button data-sw="angela">Angela</button>
+        <button data-sw="neo">Neo</button>
+        <span id="cur">（未加载）</span>
+      </div>
+      <div class="row">
+        <span class="lbl">口型 OpenY：</span>
+        <input id="mouth" type="range" min="0" max="1" step="0.01" value="0">
+        <span id="mouthv">0.00</span>
+      </div>
+      <div class="row">
+        <span class="lbl">嘴形 Form：</span>
+        <input id="form" type="range" min="-1" max="1" step="0.05" value="0">
+        <span id="formv">0.00</span>
+      </div>
+      <div class="row">
+        <span class="lbl">动作：</span>
+        <button class="act" data-mo="idle">idle</button>
+        <button data-mo="talk">talk</button>
+        <button data-mo="singing_high">singing_high</button>
+        <button data-mo="singing_low">singing_low</button>
+        <button class="dim" data-mo="sway">sway</button>
+        <button class="dim" data-mo="wave">wave</button>
+        <button class="dim" data-mo="bow">bow</button>
+        <button class="dim" data-mo="point">point</button>
+      </div>
+      <div class="row">
+        <span class="lbl">表情：</span>
+        <button class="dim" data-ex="F01">F01</button>
+        <button class="dim" data-ex="F02">F02</button>
+      </div>
+      <div class="row">
+        <button id="playviseme">▶ 播放 visemes.sample.json（循环）</button>
+        <button id="stopviseme" class="dim">■ 停</button>
+      </div>
+      <div id="status">初始化中…</div>
+    </div>
+  </div>
+
+  <!-- pixi@7 UMD 引用 process.env，浏览器需 polyfill，否则 ReferenceError: process is not defined -->
+  <script>window.process = window.process || { env: { NODE_ENV: "production" } };</script>
+  <!-- 依赖：UMD 三 script，顺序固定（cubism core → pixi → cubism4）。路演前下到 lib/ 本地化。 -->
+  <script src="https://cubism.live2d.com/sdk-web/cubismcore/live2dcubismcore.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/pixi.js@7.4.0/dist/pixi.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/pixi-live2d-display@0.5.0-beta/dist/cubism4.min.js"></script>
+
+  <script type="module">
+    import { CharacterStage } from "./character.js";
+    import { resolveCharacterModels } from "./model-presets.js";
+
+    // P1 占位模型（Live2D 官方 CubismWebSamples · Cubism4，jsdelivr CDN，已核实可达+CORS）。
+    // Angela(女)=Hiyori、Neo(男)=Mark（性别对应角色，便于验证切换的视觉差异）。
+    // 真模型就位后改为本地相对路径：
+    //   angela: "models/angela/angela.model3.json"
+    //   neo:    "models/neo/neo.model3.json"
+    const characterModels = resolveCharacterModels(new URLSearchParams(location.search));
+    const MODELS = characterModels.models;
+    const MODEL_GAINS = characterModels.gains;
+    window.MODEL_PRESETS = characterModels.presets;
+    window.MODEL_SELECTION = characterModels.selected;
+
+    const $ = (id) => document.getElementById(id);
+    const setStatus = (msg, cls = "") => { $("status").innerHTML = msg; $("status").className = cls; };
+    const setCur = (n) => { $("cur").textContent = n ? `当前：${n}` : "（未加载）"; };
+
+    let stage, visTimer = null;
+    try {
+      stage = await CharacterStage.mount($("cv"));
+      setStatus("正在加载模型…（首次拉 CDN 较慢）");
+
+      const a = await stage.preload("angela", { model: MODELS.angela, gain: MODEL_GAINS.angela });
+      const n = await stage.preload("neo",    { model: MODELS.neo, gain: MODEL_GAINS.neo });
+      if (!a && !n) {
+        setStatus("⚠️ 两个模型都加载失败，检查网络/CDN/控制台错误。", "err");
+      } else {
+        await stage.switchTo("angela");
+        stage.idle();
+        setCur(stage.current);
+        const miss = [a, n].filter(x => !x).length;
+        setStatus(`就绪。Angela=${a ? "✓" : "✗"} Neo=${n ? "✓" : "✗"}`
+          + (miss ? `（${miss} 个失败，详见控制台）` : "")
+          + `<br>滑块调嘴、点动作、或播放 visemes。占位模型动作组仅 Idle/Tap，非 idle 动作会 fallback。`,
+          miss ? "" : "ok");
+      }
+    } catch (e) {
+      console.error(e);
+      setStatus("挂载失败：" + (e?.message || e), "err");
+    }
+    window.stage = stage;
+
+    // 切模型
+    document.querySelectorAll("[data-sw]").forEach(b => b.onclick = async () => {
+      const ok = await stage?.switchTo(b.dataset.sw);
+      if (ok) setCur(stage.current);
+    });
+
+    // 口型滑块
+    const mouth = $("mouth");
+    mouth.oninput = () => {
+      $("mouthv").textContent = (+mouth.value).toFixed(2);
+      stage?.setViseme({ ParamMouthOpenY: +mouth.value });
+    };
+    const form = $("form");
+    form.oninput = () => {
+      $("formv").textContent = (+form.value).toFixed(2);
+      stage?.setViseme({ ParamMouthForm: +form.value });
+    };
+
+    // 动作按钮（缺动作 silent fallback，不报错）
+    document.querySelectorAll("[data-mo]").forEach(b => b.onclick = async () => {
+      const ok = await stage?.playMotion(b.dataset.mo);
+      console.log(`playMotion(${b.dataset.mo}) → ${ok}`);
+    });
+    // 表情按钮
+    document.querySelectorAll("[data-ex]").forEach(b => b.onclick = () => {
+      const ok = stage?.setExpression(b.dataset.ex);
+      console.log(`setExpression(${b.dataset.ex}) → ${ok}`);
+    });
+
+    // 循环播放 data/samples/visemes.sample.json
+    const stopViseme = () => {
+      if (visTimer) { clearInterval(visTimer); visTimer = null; }
+      stage?.setViseme({ ParamMouthOpenY: 0 });
+    };
+    $("playviseme").onclick = async () => {
+      try {
+        const V = await fetch("../../data/samples/visemes.sample.json").then(r => r.json());
+        const fps = V.fps || 30, params = V.params, frames = V.frames;
+        if (!frames?.length) return setStatus("visemes 样例无 frames", "err");
+        stopViseme();
+        let i = 0;
+        visTimer = setInterval(() => {
+          const row = frames[i % frames.length];
+          const obj = {};
+          params.forEach((p, j) => obj[p] = row[j]);
+          stage?.setViseme(obj);
+          i++;
+        }, 1000 / fps);
+        setStatus(`播放 visemes（${frames.length} 帧 @${fps}fps，循环）`, "ok");
+      } catch (e) {
+        setStatus("读取 visemes 失败：" + e, "err");
+      }
+    };
+    $("stopviseme").onclick = () => { stopViseme(); setStatus("已停止口型回放"); };
+
+    // 轻量 FPS 计数（自检要求 ≥55）
+    let frames = 0, last = performance.now();
+    (function tick() {
+      frames++;
+      const now = performance.now();
+      if (now - last >= 500) {
+        $("fps").textContent = "fps: " + Math.round((frames * 1000) / (now - last));
+        frames = 0; last = now;
+      }
+      requestAnimationFrame(tick);
+    })();
+  </script>
+</body>
+</html>

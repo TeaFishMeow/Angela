@@ -1,0 +1,9 @@
+{
+  "scene": "yinwei-aiqing",
+  "id": "ywa_interlude_1",
+  "voice": "neo",
+  "text": "保持这个感觉，马上进入下一段。",
+  "tts_wav": "演示用例\\因为爱情_分轨\\encouragements\\ywa_interlude_1_neo_tts.wav",
+  "prebaked": "演示用例\\因为爱情_分轨\\encouragements\\ywa_interlude_1_neo_rvc.wav",
+  "rvc_applied": false
+}

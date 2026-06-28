@@ -20,12 +20,12 @@
     "visemes": "演示用例/传奇_分轨/visemes.json",
     "actions": "演示用例/传奇_分轨/actions.json"
   },
-  "mv": "演示用例/传奇 MV.mp4",
+  "mv": "演示用例/传奇 MV 2.mp4",
   "cover": "演示用例/传奇cover.jpg",
   "dialogue": {
     "intro": ["这首《传奇》，我们一起唱吧。"],
     "outro": ["唱得真好，下一首换个人选？"]
   },
   "character_model": "models/angela/angela.model3.json",
-  "_note": "样例 manifest（duration 为真实时长）。传奇=Angela女数字人+队友C 齐唱(unison)。backing.wav 待烘焙，未就绪时 scenes.py 回退 instrumental。真实数据以 演示用例/传奇_分轨/scene.json 为准。"
+  "_note": "真值 manifest（scenes.py 最高优先级）。mv=新版传奇 MV 2.mp4。backing.wav 未烘焙→backing_url 回退 instrumental；visemes/actions 未烘焙→load_track 回退 data/samples。烘焙后无需改本文件。"
 }
