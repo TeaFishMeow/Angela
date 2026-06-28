@@ -1,0 +1,33 @@
+{
+  "id": "yinwei-aiqing",
+  "title": "因为爱情",
+  "artist": "陈奕迅 / 王菲",
+  "duration": 216.9,
+  "bpm": 72,
+  "duet": true,
+  "parts": {
+    "low": { "speaker": "Neo", "label": "Neo 男声部" },
+    "high": { "speaker": "Teammate C", "label": "队友C 女声部" }
+  },
+  "audio": {
+    "mix": "/demo-assets/因为爱情_分轨/因为爱情_backing.wav",
+    "instrumental": "/demo-assets/因为爱情_分轨/因为爱情 男声_instrumental.wav",
+    "vocals_neo": "/demo-assets/因为爱情_分轨/因为爱情 男声_vocals.wav"
+  },
+  "tracks": {
+    "lyrics": "samples/lyrics.yinwei-aiqing.json",
+    "visemes": "samples/visemes.yinwei-aiqing.json",
+    "actions": "samples/actions.yinwei-aiqing.json"
+  },
+  "mv": "/demo-assets/因为爱情.mp4",
+  "cover": "",
+  "dialogue": {
+    "intro": "因为爱情，不会轻易悲伤。我们一起，好吗？",
+    "selected": ["因为爱情，不会轻易悲伤。我们一起，好吗？"],
+    "finale": ["唱得真好，这就是爱情的样子吧。"]
+  },
+  "stage": {
+    "character": "neo",
+    "startAction": "singing_low"
+  }
+}

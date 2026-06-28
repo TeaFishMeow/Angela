@@ -15,6 +15,7 @@ from tts import run_tts
 
 app = FastAPI(title="Angela Backend", version="0.1")
 app.mount("/assets", StaticFiles(directory=song_store.ASSETS, check_dir=False), name="assets")
+app.mount("/demo-assets", StaticFiles(directory=song_store.DEMO_ASSETS, check_dir=False), name="demo-assets")
 
 
 @app.get("/api/songs")
@@ -28,6 +29,16 @@ def api_song(song_id: str) -> dict[str, Any]:
         return song_store.public_manifest(song_id)
     except FileNotFoundError:
         raise HTTPException(status_code=404, detail={"code": "SONG_NOT_FOUND", "message": song_id})
+
+
+@app.get("/api/songs/{song_id}/tracks/{track}")
+def api_track(song_id: str, track: str) -> dict[str, Any]:
+    if track not in {"lyrics", "visemes", "actions"}:
+        raise HTTPException(status_code=404, detail={"code": "TRACK_NOT_FOUND", "message": track})
+    try:
+        return song_store.load_track(song_id, track)
+    except FileNotFoundError:
+        raise HTTPException(status_code=404, detail={"code": "TRACKS_MISSING", "message": f"{song_id}:{track}"})
 
 
 @app.post("/api/tts")
@@ -53,15 +64,22 @@ async def _tick_loop(bus: Bus, duration: float, stop: asyncio.Event) -> None:
 async def _start_song(bus: Bus, song_id: str, stop: asyncio.Event) -> None:
     manifest = song_store.public_manifest(song_id)
     duration = float(manifest.get("duration", 0) or 0)
+    start_action = manifest.get("stage", {}).get("startAction", "singing_high")
     await bus.send("song.tracks", song_store.track_payload(song_id))
     await bus.send("phase.change", {"phase": "singing"})
-    await bus.send("action.set", {"name": "singing_high", "loop": True})
+    await bus.send("action.set", {"name": start_action, "loop": True})
     await bus.send("song.start", {"id": song_id, "mixUrl": song_store.mix_url(song_id), "t0": 0})
 
     ticker = asyncio.create_task(_tick_loop(bus, duration, stop))
     try:
         with suppress(asyncio.TimeoutError):
             await asyncio.wait_for(stop.wait(), timeout=duration)
+    except asyncio.CancelledError:
+        stop.set()
+        ticker.cancel()
+        with suppress(asyncio.CancelledError):
+            await ticker
+        return
     finally:
         stop.set()
         ticker.cancel()

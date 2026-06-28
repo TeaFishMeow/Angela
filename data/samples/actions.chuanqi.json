@@ -1,0 +1,10 @@
+{
+  "song": "chuanqi",
+  "timeline": [
+    { "t": 0.0, "action": "idle", "loop": true },
+    { "t": 12.0, "action": "singing_high", "loop": true },
+    { "t": 72.0, "action": "sway", "loop": true },
+    { "t": 180.0, "action": "wave", "loop": false, "blend": 0.4, "dur": 3.0, "then": "singing_high" },
+    { "t": 280.0, "action": "bow", "loop": false, "blend": 0.4, "dur": 4.0, "then": "idle" }
+  ]
+}

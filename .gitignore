@@ -9,6 +9,7 @@
 *.mkv
 *.mov
 *.webm
+*.zip
 # Live2D / 3D 模型本体
 *.model3.json
 *.physics3.json

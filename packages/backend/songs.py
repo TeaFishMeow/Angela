@@ -10,12 +10,13 @@ ROOT = Path(__file__).resolve().parents[2]
 ASSETS = ROOT / "assets"
 SAMPLES = ROOT / "data" / "samples"
 SONGS_DIR = ASSETS / "songs"
+DEMO_ASSETS = ROOT / "演示用例"
 
 
-SAMPLE_TRACK_FILES = {
-    "lyrics": SAMPLES / "lyrics.daoxiang.json",
-    "visemes": SAMPLES / "visemes.sample.json",
-    "actions": SAMPLES / "actions.sample.json",
+DEFAULT_TRACK_FILES = {
+    "lyrics": "lyrics.daoxiang.json",
+    "visemes": "visemes.sample.json",
+    "actions": "actions.sample.json",
 }
 
 
@@ -24,7 +25,21 @@ def read_json(path: Path) -> dict[str, Any]:
 
 
 def _asset_url(path: str) -> str:
+    if not path:
+        return ""
     return path if path.startswith("/") else f"/assets/{path}"
+
+
+def _track_file(song_id: str, track: str) -> Path | None:
+    specific = SAMPLES / f"{track}.{song_id}.json"
+    if specific.exists():
+        return specific
+    default = DEFAULT_TRACK_FILES.get(track)
+    if default:
+        path = SAMPLES / default
+        if path.exists():
+            return path
+    return None
 
 
 def _song_path(song_id: str) -> Path | None:
@@ -56,12 +71,22 @@ def load_song(song_id: str) -> dict[str, Any]:
 
 def public_manifest(song_id: str) -> dict[str, Any]:
     manifest = deepcopy(load_song(song_id))
-    for section in ("audio", "tracks"):
+    for section in ("audio",):
         values = manifest.get(section)
         if isinstance(values, dict):
             for key, value in values.items():
                 if isinstance(value, str):
                     values[key] = _asset_url(value)
+    tracks = manifest.get("tracks")
+    if isinstance(tracks, dict):
+        for key, value in tracks.items():
+            if not isinstance(value, str):
+                continue
+            asset_path = ASSETS / value
+            if asset_path.exists():
+                tracks[key] = _asset_url(value)
+            else:
+                tracks[key] = f"/api/songs/{song_id}/tracks/{key}"
     for key in ("mv", "cover"):
         if isinstance(manifest.get(key), str):
             manifest[key] = _asset_url(manifest[key])
@@ -92,8 +117,8 @@ def load_track(song_id: str, track: str) -> dict[str, Any]:
         if asset_path.exists():
             return read_json(asset_path)
 
-    sample = SAMPLE_TRACK_FILES.get(track)
-    if sample and sample.exists():
+    sample = _track_file(song_id, track)
+    if sample:
         return read_json(sample)
 
     raise FileNotFoundError(f"{song_id}:{track}")
@@ -107,6 +132,8 @@ def track_payload(song_id: str, inline_fallback: bool = True) -> dict[str, Any]:
         asset_path = ASSETS / rel if isinstance(rel, str) else None
         if asset_path and asset_path.exists():
             payload[track] = {"url": _asset_url(rel)}
+        elif _track_file(song_id, track):
+            payload[track] = {"url": f"/api/songs/{song_id}/tracks/{track}"}
         elif inline_fallback:
             payload[track] = load_track(song_id, track)
         elif isinstance(rel, str):

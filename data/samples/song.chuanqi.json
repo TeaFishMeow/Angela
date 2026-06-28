@@ -1,0 +1,33 @@
+{
+  "id": "chuanqi",
+  "title": "传奇",
+  "artist": "王菲",
+  "duration": 287.6,
+  "bpm": 76,
+  "duet": true,
+  "parts": {
+    "high": { "speaker": "Angela", "label": "Angela" },
+    "low": { "speaker": "Teammate C", "label": "队友C" }
+  },
+  "audio": {
+    "mix": "/demo-assets/传奇_分轨/传奇_backing.wav",
+    "instrumental": "/demo-assets/传奇_分轨/传奇_instrumental.wav",
+    "vocals_angela": "/demo-assets/传奇_分轨/传奇_vocals.wav"
+  },
+  "tracks": {
+    "lyrics": "samples/lyrics.chuanqi.json",
+    "visemes": "samples/visemes.chuanqi.json",
+    "actions": "samples/actions.chuanqi.json"
+  },
+  "mv": "/demo-assets/传奇 MV.mp4",
+  "cover": "",
+  "dialogue": {
+    "intro": "这首《传奇》，我们一起唱吧。",
+    "selected": ["这首《传奇》，我们一起唱吧。"],
+    "finale": ["唱得真好，下一首换个人选？"]
+  },
+  "stage": {
+    "character": "angela",
+    "startAction": "singing_high"
+  }
+}
