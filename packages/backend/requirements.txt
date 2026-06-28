@@ -1,0 +1,8 @@
+fastapi[standard]
+uvicorn[standard]
+websockets
+pydantic
+edge-tts
+librosa
+soundfile
+numpy
