@@ -1,0 +1,31 @@
+{
+  "id": "chuanqi",
+  "title": "传奇",
+  "artist": "李健 / 王菲",
+  "character": "angela",
+  "relation": "unison",
+  "duration": 90.0,
+  "parts": {
+    "digital":   { "performer": "Angela(数字人)", "voice": "旋律(齐唱)" },
+    "teammateC": { "performer": "队友C(现场真唱)", "voice": "同一旋律(齐唱)" }
+  },
+  "audio": {
+    "backing":      "演示用例/传奇_分轨/传奇_backing.wav",
+    "instrumental": "演示用例/传奇_分轨/传奇 instrumental.wav",
+    "vocal_src":    "演示用例/传奇_分轨/传奇 vocals.wav",
+    "vocal_rvc":    "演示用例/传奇_分轨/传奇 vocals_angela_rvc.wav"
+  },
+  "tracks": {
+    "lyrics":  "演示用例/传奇_分轨/lyrics.json",
+    "visemes": "演示用例/传奇_分轨/visemes.json",
+    "actions": "演示用例/传奇_分轨/actions.json"
+  },
+  "mv": "演示用例/传奇 MV.mp4",
+  "cover": "演示用例/传奇cover.jpg",
+  "dialogue": {
+    "intro": ["这首《传奇》，我们一起唱吧。"],
+    "outro": ["唱得真好，下一首换个人选？"]
+  },
+  "character_model": "models/angela/angela.model3.json",
+  "_note": "样例 manifest。传奇=Angela女数字人+队友C 齐唱。真实数据以 演示用例/传奇_分轨/scene.json 为准。"
+}

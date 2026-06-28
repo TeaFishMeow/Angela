@@ -1,0 +1,13 @@
+{
+  "scene": "yinwei-aiqing",
+  "fps": 30,
+  "_note": "样例歌词(因为爱情对唱示例)。part: digital=数字人(Neo男声部) / teammateC=队友C现场(女声部) / duet=合唱。时间戳占位,真实数据用 backing.wav 打点(docs/07 §7)。",
+  "lines": [
+    { "t": 2.0,  "d": 4.0, "part": "digital",   "performer": "Neo",       "text": "给你一张过去的CD" },
+    { "t": 6.2,  "d": 4.0, "part": "teammateC", "performer": "队友C",     "text": "听听那时我们的爱情" },
+    { "t": 10.4, "d": 3.8, "part": "digital",   "performer": "Neo",       "text": "有时会突然忘了" },
+    { "t": 14.4, "d": 4.2, "part": "teammateC", "performer": "队友C",     "text": "我还在爱着你" },
+    { "t": 20.0, "d": 4.6, "part": "duet",      "performer": "Neo+队友C", "text": "因为爱情 不会轻易悲伤" },
+    { "t": 24.8, "d": 4.4, "part": "duet",      "performer": "Neo+队友C", "text": "所以一切都是幸福的模样" }
+  ]
+}

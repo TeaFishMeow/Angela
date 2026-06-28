@@ -1,0 +1,31 @@
+{
+  "id": "yinwei-aiqing",
+  "title": "因为爱情",
+  "artist": "陈奕迅 / 王菲",
+  "character": "neo",
+  "relation": "duet",
+  "duration": 90.0,
+  "parts": {
+    "digital":   { "performer": "Neo(数字人)", "voice": "陈奕迅男声部" },
+    "teammateC": { "performer": "队友C(现场真唱)", "voice": "王菲女声部" }
+  },
+  "audio": {
+    "backing":      "演示用例/因为爱情_分轨/因为爱情_backing.wav",
+    "instrumental": "演示用例/因为爱情_分轨/因为爱情 男声_instrumental.wav",
+    "vocal_src":    "演示用例/因为爱情_分轨/因为爱情 男声_vocals.wav",
+    "vocal_rvc":    "演示用例/因为爱情_分轨/因为爱情 男声_vocals_neo_rvc.wav"
+  },
+  "tracks": {
+    "lyrics":  "演示用例/因为爱情_分轨/lyrics.json",
+    "visemes": "演示用例/因为爱情_分轨/visemes.json",
+    "actions": "演示用例/因为爱情_分轨/actions.json"
+  },
+  "mv": "演示用例/因为爱情.mp4",
+  "cover": "演示用例/因为爱情cover.jpg",
+  "dialogue": {
+    "intro": ["因为爱情，不会轻易悲伤。我们一起，好吗？"],
+    "outro": ["唱得真好，这就是爱情的样子吧。"]
+  },
+  "character_model": "models/neo/neo.model3.json",
+  "_note": "样例 manifest。因为爱情=Neo男数字人(男声部在带里)+队友C现场唱女声部。男声+伴奏已由用户分好。真实数据以 演示用例/因为爱情_分轨/scene.json 为准。"
+}
